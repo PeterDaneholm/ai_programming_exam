@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class RoomNode : Node
+public class RoomNode : NodePCG
 {
-    public RoomNode(Vector2Int bottomLeftAreaCorner, Vector2Int topRightAreaCorner, Node parentNode, int index) : base(parentNode)
+    public RoomNode(Vector2Int bottomLeftAreaCorner, Vector2Int topRightAreaCorner, NodePCG parentNode, int index) : base(parentNode)
     {
         this.BottomLeftAreaCorner = bottomLeftAreaCorner;
         this.TopRightAreaCorner = topRightAreaCorner;
