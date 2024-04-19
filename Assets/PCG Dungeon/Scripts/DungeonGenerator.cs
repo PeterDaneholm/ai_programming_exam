@@ -19,10 +19,13 @@ public class DungeonGenerator : MonoBehaviour
         this.dungeonLength = dungeonLength;
     }
 
-    internal object CalculateRooms(int maxiterations, int roomWidthMin, int roomLengthMin)
+    public List<NodePCG> CalculateRooms(int maxiterations, int roomWidthMin, int roomLengthMin)
     {
         BinarySpacePartitioning bsp = new BinarySpacePartitioning(dungeonWidth, dungeonLength);
         allSpaceNodes = bsp.PrepareNodesCollection(maxiterations, roomWidthMin, roomLengthMin);
-        return new List<NodePCG>(allSpaceNodes);
+        List<NodePCG> roomSpaces = StructureHelper.TraverseGraphToExtractLowestLeafes(bsp.RootNode);
+        RoomGenerator roomGenerator = new RoomGenerator(maxiterations, roomLengthMin, roomWidthMin);
+        List<RoomNode> rooms = roomGenerator.GenerateRoomsInGivenSpaces(roomSpaces);
+        return new List<NodePCG>(rooms);
     }
 }
