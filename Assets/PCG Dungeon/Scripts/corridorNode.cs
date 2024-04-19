@@ -33,15 +33,15 @@ public class corridorNode : NodePCG
                 ProcessRoomInRelationUpOrDown(this.structure2, this.structure1);
                 break;
             case RelativePosition.Left:
-                ProcessRoomInRelationLeftOrRight(this.structure2, this.structure1);
+                ProcessRoomInRelationRightOrLeft(this.structure2, this.structure1);
                 break;
             case RelativePosition.Right:
-                ProcessRoomInRelationLeftOrRight(this.structure1, this.structure2);
+                ProcessRoomInRelationRightOrLeft(this.structure1, this.structure2);
                 break;
         }
     }
 
-    private void ProcessRoomInRelationLeftOrRight(NodePCG structure2, NodePCG structure1)
+    private void ProcessRoomInRelationRightOrLeft(NodePCG structure1, NodePCG structure2)
     {
         NodePCG leftStructure = null;
         List<NodePCG> leftStructureChildren = StructureHelper.TraverseGraphToExtractLowestLeafes(structure1);
@@ -49,6 +49,7 @@ public class corridorNode : NodePCG
         List<NodePCG> rightStrutureChildren = StructureHelper.TraverseGraphToExtractLowestLeafes(structure2);
 
         var sortedLeftStructure = leftStructureChildren.OrderByDescending(ChildrenNodeList => TopRightAreaCorner.x).ToList();
+        
             if(sortedLeftStructure.Count == 1)
             {
                 leftStructure = sortedLeftStructure[0];
@@ -62,7 +63,7 @@ public class corridorNode : NodePCG
 
             var PossibleNeighboursInRightStructureList = rightStrutureChildren.Where(child => GetValidYForNeighbourLeftRight(
                 leftStructure.TopRightAreaCorner, 
-                leftStructure.BottomLeftAreaCorner, 
+                leftStructure.BottomRightAreaCorner, 
                 child.TopRightAreaCorner, 
                 child.BottomLeftAreaCorner) 
                 != -1).ToList();
@@ -89,7 +90,7 @@ public class corridorNode : NodePCG
                                 rightStructure.BottomRightAreaCorner);
                     }
                     BottomLeftAreaCorner = new Vector2Int(leftStructure.BottomRightAreaCorner.x, y);
-                    TopRightAreaCorner = new Vector2Int(rightStructure.TopLeftAreaCorner.x, y + corridorWidth);
+                    TopRightAreaCorner = new Vector2Int(rightStructure.TopLeftAreaCorner.x, y + this.corridorWidth);
             
     }
 
@@ -101,19 +102,19 @@ public class corridorNode : NodePCG
             leftNodeDown + new Vector2Int(0, modifierDistanceFromWall), 
             leftNodeUp - new Vector2Int(0, modifierDistanceFromWall + this.corridorWidth)).y;
         }
-        if(rightNodeUp.y < leftNodeUp.y && leftNodeDown.y > rightNodeDown.y)
+        if(rightNodeUp.y <= leftNodeUp.y && leftNodeDown.y <= rightNodeDown.y)
         {
            return StructureHelper.CalculatemiddlePoint(
             rightNodeDown + new Vector2Int(0, modifierDistanceFromWall), 
             rightNodeUp - new Vector2Int(0, modifierDistanceFromWall + this.corridorWidth)).y;
         }
-        if(leftNodeUp.y < rightNodeDown.y && leftNodeUp.y > rightNodeUp.y)
+        if(leftNodeUp.y >= rightNodeDown.y && leftNodeUp.y <= rightNodeUp.y)
         {
            return StructureHelper.CalculatemiddlePoint(
             rightNodeDown + new Vector2Int(0, modifierDistanceFromWall), 
             leftNodeUp - new Vector2Int(0, modifierDistanceFromWall)).y;
         }
-        if(rightNodeDown.y > leftNodeDown.y && leftNodeDown.y < rightNodeUp.y)
+        if(rightNodeDown.y >= leftNodeDown.y && leftNodeDown.y <= rightNodeUp.y)
         {
             return StructureHelper.CalculatemiddlePoint( 
                 leftNodeDown + new Vector2Int( 0, modifierDistanceFromWall), 
@@ -123,47 +124,48 @@ public class corridorNode : NodePCG
         
     }
 
-    private void ProcessRoomInRelationUpOrDown(NodePCG structure2, NodePCG structure1)
+    private void ProcessRoomInRelationUpOrDown(NodePCG structure1, NodePCG structure2)
     {
         NodePCG bottomStructure = null;
         List<NodePCG> structureBottomChildren = StructureHelper.TraverseGraphToExtractLowestLeafes(structure1);
         NodePCG topStructure = null;
-        List<NodePCG> topStructureChildren = StructureHelper.TraverseGraphToExtractLowestLeafes(structure2);
+        List<NodePCG> structureAboveChildren = StructureHelper.TraverseGraphToExtractLowestLeafes(structure2);
 
         var sortedBottomStructure = structureBottomChildren.OrderByDescending(child => child.TopRightAreaCorner.y).ToList();
         
         if (sortedBottomStructure.Count == 1)
         {
-            bottomStructure = sortedBottomStructure[0];
+            bottomStructure = structureBottomChildren[0];
         }
         else
         {
-            int maxY = sortedBottomStructure[0].TopRightAreaCorner.y;
-            sortedBottomStructure = sortedBottomStructure.Where(child => Math.Abs(maxY - child.TopRightAreaCorner.y) < 10).ToList();
+            int maxY = sortedBottomStructure[0].TopLeftAreaCorner.y;
+            sortedBottomStructure = sortedBottomStructure.Where(child => Math.Abs(maxY - child.TopLeftAreaCorner.y) < 10).ToList();
             int index = UnityEngine.Random.Range(0, sortedBottomStructure.Count);
             bottomStructure = sortedBottomStructure[index];
         }
 
-        var PossibleNeighboursInTopStructure = topStructureChildren.Where(
+        var possibleNeighboursInTopStructure = structureAboveChildren.Where(
             child => GetValidXForNeighbourUpDown(
             bottomStructure.TopLeftAreaCorner, 
             bottomStructure.TopRightAreaCorner, 
             child.BottomLeftAreaCorner, 
-            child.BottomRightAreaCorner) != -1).ToList();
-            if(PossibleNeighboursInTopStructure.Count == 0)
+            child.BottomRightAreaCorner) != -1).OrderBy(child => child.BottomRightAreaCorner.y).ToList();
+            
+            if(possibleNeighboursInTopStructure.Count == 0)
             {
                 topStructure = structure2;
             }
             else
             {
-                topStructure = PossibleNeighboursInTopStructure[0];
+                topStructure = possibleNeighboursInTopStructure[0];
             }
             int x = GetValidXForNeighbourUpDown(
                 bottomStructure.TopLeftAreaCorner, 
                 bottomStructure.TopRightAreaCorner, 
                 topStructure.BottomLeftAreaCorner, 
                 topStructure.BottomRightAreaCorner);
-                while(x == -1 && sortedBottomStructure.Count > 1)
+            while(x == -1 && sortedBottomStructure.Count > 1)
                 {
                     sortedBottomStructure = sortedBottomStructure.Where(
                         child => child.TopLeftAreaCorner.x != bottomStructure.TopLeftAreaCorner.x).ToList();
@@ -213,13 +215,13 @@ public class corridorNode : NodePCG
         float angle = CalculateAngle(middlePointStructure1Temp, middlePointStructure2Temp);
         if((angle < 45 && angle >=0) || (angle > -45 && angle < 0 ))
         {
-            return RelativePosition.Right;;
+            return RelativePosition.Right;
         }
         else if(angle > 45 && angle < 135)
         {
             return RelativePosition.Up;
         }
-        else if(angle > 135 || angle < -135)
+        else if(angle > -135 || angle < -45)
         {
             return RelativePosition.Down;
         }

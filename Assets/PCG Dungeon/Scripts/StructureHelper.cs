@@ -74,8 +74,9 @@ public static class StructureHelper
 
 public enum RelativePosition
 {
-    Left,
-    Right,
     Up,
-    Down
+    Down,
+    Left,
+    Right
+    
 }
