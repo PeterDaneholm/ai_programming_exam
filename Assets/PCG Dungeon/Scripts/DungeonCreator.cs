@@ -115,7 +115,8 @@ public class DungeonCreator : MonoBehaviour
         dungeonFloor.transform.position = Vector3.zero;
         dungeonFloor.transform.localScale = Vector3.one;
         dungeonFloor.GetComponent<MeshFilter>().mesh = mesh;
-        dungeonFloor.GetComponent<MeshRenderer>().material = material; // 'material' needs to be defined or
+        dungeonFloor.GetComponent<MeshRenderer>().material = material; // 'material' needs to be defined or 
+        dungeonFloor.transform.parent = transform;
 
         for (int row = (int)bottomLeftV.x; row < (int)bottomRightV.x; row++)
         {

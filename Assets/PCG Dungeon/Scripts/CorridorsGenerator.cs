@@ -22,6 +22,4 @@ public class CorridorsGenerator
         }
         return corridorList;
     }
-
-    // Start is called before the first frame update
 }

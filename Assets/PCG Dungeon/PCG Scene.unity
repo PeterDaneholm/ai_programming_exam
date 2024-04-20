@@ -181,7 +181,7 @@ MonoBehaviour:
   dungeonLength: 200
   roomWidthMin: 25
   roomLengthMin: 25
-  maxiterations: 15
+  maxiterations: 10
   corridorWidth: 5
   material: {fileID: 2100000, guid: 155fa8eb3993f4d3c8476736ca01117b, type: 2}
   roomBottomCornerModifier: 0.1
@@ -384,6 +384,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2256716386124405189, guid: 8d7e044ca156c334c8089b9c03d0a11f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.28306606
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256716386124405189, guid: 8d7e044ca156c334c8089b9c03d0a11f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.9248412
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256716386124405189, guid: 8d7e044ca156c334c8089b9c03d0a11f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 116.79175
       objectReference: {fileID: 0}
@@ -427,6 +435,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vertical
       objectReference: {fileID: 0}
+    - target: {fileID: 5128608751734329912, guid: 8d7e044ca156c334c8089b9c03d0a11f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -443,6 +455,18 @@ PrefabInstance:
     - target: {fileID: 2293476922233998768, guid: f4bbd320dff4e5543b4bf3e06141bba6, type: 3}
       propertyPath: m_Name
       value: Horizontal
+      objectReference: {fileID: 0}
+    - target: {fileID: 2293476922233998768, guid: f4bbd320dff4e5543b4bf3e06141bba6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2841703970829650965, guid: f4bbd320dff4e5543b4bf3e06141bba6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.0982814
+      objectReference: {fileID: 0}
+    - target: {fileID: 2841703970829650965, guid: f4bbd320dff4e5543b4bf3e06141bba6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2632597
       objectReference: {fileID: 0}
     - target: {fileID: 2841703970829650965, guid: f4bbd320dff4e5543b4bf3e06141bba6, type: 3}
       propertyPath: m_LocalPosition.x
