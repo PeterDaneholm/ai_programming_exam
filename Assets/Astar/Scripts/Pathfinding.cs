@@ -18,7 +18,6 @@ public class Pathfinding : MonoBehaviour
  */
     PathRequestManager requestManager;
     Grid grid;
-
     void Awake()
     {
         grid = GetComponent<Grid>();
