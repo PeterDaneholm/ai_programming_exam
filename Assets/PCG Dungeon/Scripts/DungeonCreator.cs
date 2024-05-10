@@ -186,16 +186,17 @@ public class DungeonCreator : MonoBehaviour
             x = UnityEngine.Random.Range(1, dungeonWidth);
             z = UnityEngine.Random.Range(1, dungeonLength);
             pos = new Vector3(x, 0, z);
-            walkable = Physics.CheckSphere(pos, 0.5f, walkableMask);
-            unwalkable = !Physics.CheckSphere(pos, 0.5f, unwalkableMask);
+            walkable = Physics.CheckSphere(pos, 1f, walkableMask);
+            unwalkable = !Physics.CheckSphere(pos, 1f, unwalkableMask);
             print($"{obj}" + walkable);
             print($"{obj}" + unwalkable);
 
         }
-        while (walkable && unwalkable);
-        print($"{obj}" + walkable);
-        print($"{obj}" + unwalkable);
-        GameObject.Instantiate(obj, new Vector3(x, 0, z), Quaternion.identity);
+        while (walkable || !unwalkable);
+        //////////////// print("Woooo");
+        // print($"{obj}" + walkable);
+        // print($"{obj}" + unwalkable);
+        GameObject.Instantiate(obj, pos, Quaternion.identity);
     }
     private void SetPlayerAndTarget()
     {

@@ -1,4 +1,4 @@
- ﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -11,9 +11,12 @@ public class DungeonCreatorEditor : Editor
     {
         base.OnInspectorGUI();
         DungeonCreator dungeonCreator = (DungeonCreator)target;
+
         if (GUILayout.Button("CreateNewDungeon"))
         {
             dungeonCreator.createDungeon();
+            GameObject astar = GameObject.Find("A*");
+            astar.GetComponent<Grid>().CreateGrid();
         }
     }
 }
