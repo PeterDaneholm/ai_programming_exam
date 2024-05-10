@@ -19,6 +19,7 @@ public class DungeonCreator : MonoBehaviour
     [Range(0, 2)]
     public int roomOffset;
     public GameObject Player, Target;
+    public LayerMask unwalkableMask, walkableMask;
 
     public GameObject wallVertical, wallHorizontal;
     List<Vector3Int> possibleDoorVerticalPosition;
@@ -170,14 +171,30 @@ public class DungeonCreator : MonoBehaviour
                 DestroyImmediate(item.gameObject);
             }
         }
-        Destroy(Target);
-        Destroy(Player);
+        Destroy(GameObject.Find("Player(Clone)"));
+        Destroy(GameObject.Find("Target(Clone)"));
     }
 
     private void SetObjectFromDimensions(GameObject obj)
     {
-        int x = UnityEngine.Random.Range(1, dungeonWidth);
-        int z = UnityEngine.Random.Range(1, dungeonLength);
+        int x, z;
+        Vector3 pos;
+        bool walkable;
+        bool unwalkable;
+        do
+        {
+            x = UnityEngine.Random.Range(1, dungeonWidth);
+            z = UnityEngine.Random.Range(1, dungeonLength);
+            pos = new Vector3(x, 0, z);
+            walkable = Physics.CheckSphere(pos, 0.5f, walkableMask);
+            unwalkable = !Physics.CheckSphere(pos, 0.5f, unwalkableMask);
+            print($"{obj}" + walkable);
+            print($"{obj}" + unwalkable);
+
+        }
+        while (walkable && unwalkable);
+        print($"{obj}" + walkable);
+        print($"{obj}" + unwalkable);
         GameObject.Instantiate(obj, new Vector3(x, 0, z), Quaternion.identity);
     }
     private void SetPlayerAndTarget()

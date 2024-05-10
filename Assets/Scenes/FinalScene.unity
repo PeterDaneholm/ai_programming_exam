@@ -189,6 +189,12 @@ MonoBehaviour:
   roomOffset: 1
   Player: {fileID: 8792073090670476176, guid: a74beb06971e343079b41a1b7f2e56cc, type: 3}
   Target: {fileID: 3883388705333700705, guid: e3db391a5798f4ababbeb9c5a855b52b, type: 3}
+  unwalkableMask:
+    serializedVersion: 2
+    m_Bits: 64
+  walkableMask:
+    serializedVersion: 2
+    m_Bits: 128
   wallVertical: {fileID: 282288005}
   wallHorizontal: {fileID: 45137879}
 --- !u!1 &1310937119
