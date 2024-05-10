@@ -30,8 +30,21 @@ public class DungeonCreator : MonoBehaviour
     void Start()
     {
         createDungeon();
+        SetObjectFromDimensions(Target);
+        SetObjectFromDimensions(Player);
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SetObjectFromDimensions(Target);
+        }
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            SetObjectFromDimensions(Player);
+        }
+    }
     public void createDungeon()
     {
         DestroyAllChildren();
@@ -55,8 +68,7 @@ public class DungeonCreator : MonoBehaviour
             CreateMesh(listOfRooms[i].BottomLeftAreaCorner, listOfRooms[i].TopRightAreaCorner);
         }
         //SetPlayerAndTarget();
-        SetObjectFromDimensions(Target);
-        SetObjectFromDimensions(Player);
+
         CreateWalls(wallParent);
     }
 
@@ -118,6 +130,7 @@ public class DungeonCreator : MonoBehaviour
         dungeonFloor.transform.localScale = Vector3.one;
         dungeonFloor.GetComponent<MeshFilter>().mesh = mesh;
         dungeonFloor.GetComponent<MeshRenderer>().material = material;
+        dungeonFloor.AddComponent<MeshCollider>().sharedMesh = mesh;
 
         // Set the layer to "Walkable"
         dungeonFloor.layer = LayerMask.NameToLayer("Walkable");
@@ -171,8 +184,8 @@ public class DungeonCreator : MonoBehaviour
                 DestroyImmediate(item.gameObject);
             }
         }
-        Destroy(GameObject.Find("Player(Clone)"));
         Destroy(GameObject.Find("Target(Clone)"));
+        Destroy(GameObject.Find("Player(Clone)"));
     }
 
     private void SetObjectFromDimensions(GameObject obj)
@@ -180,22 +193,16 @@ public class DungeonCreator : MonoBehaviour
         int x, z;
         Vector3 pos;
         bool walkable;
-        bool unwalkable;
+        RaycastHit hit;
         do
         {
             x = UnityEngine.Random.Range(1, dungeonWidth);
             z = UnityEngine.Random.Range(1, dungeonLength);
             pos = new Vector3(x, 0, z);
-            walkable = Physics.CheckSphere(pos, 1f, walkableMask);
-            unwalkable = !Physics.CheckSphere(pos, 1f, unwalkableMask);
-            print($"{obj}" + walkable);
-            print($"{obj}" + unwalkable);
-
+            Ray ray = new Ray(pos + Vector3.up * 10, Vector3.down);
+            walkable = Physics.Raycast(ray, out hit, Mathf.Infinity, walkableMask) && !Physics.Raycast(ray, out hit, Mathf.Infinity, unwalkableMask);
         }
-        while (walkable || !unwalkable);
-        //////////////// print("Woooo");
-        // print($"{obj}" + walkable);
-        // print($"{obj}" + unwalkable);
+        while (!walkable);
         GameObject.Instantiate(obj, pos, Quaternion.identity);
     }
     private void SetPlayerAndTarget()

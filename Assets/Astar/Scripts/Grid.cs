@@ -50,7 +50,6 @@ public class Grid : MonoBehaviour
 
     public void CreateGrid()
     {
-        Debug.Log("testing");
         grid = new Node[gridSizeX, gridSizeY];
         //We'll get the bottomleft corner here, by subtracting the position (of the A* object) with the x size/2 and y size/2
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;

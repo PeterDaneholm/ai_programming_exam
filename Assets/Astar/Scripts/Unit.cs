@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Target").transform;
+        Debug.Log(target.position);
         PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
     }
 
