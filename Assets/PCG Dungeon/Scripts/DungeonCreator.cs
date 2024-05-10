@@ -53,27 +53,24 @@ public class DungeonCreator : MonoBehaviour
             CreateMesh(listOfRooms[i].BottomLeftAreaCorner, listOfRooms[i].TopRightAreaCorner);
         }
         CreateWalls(wallParent);
-
-
     }
 
     private void CreateWalls(GameObject wallParent)
     {
         foreach (var wallPosition in possibleWallHorizontalPosition)
         {
-            CreateWall(wallParent,wallPosition,wallHorizontal);
+            CreateWall(wallParent, wallPosition, wallHorizontal);
         }
         foreach (var wallPosition in possibleWallVerticalPosition)
         {
-            CreateWall(wallParent,wallPosition,wallVertical);
+            CreateWall(wallParent, wallPosition, wallVertical);
         }
     }
 
     private void CreateWall(GameObject wallParent, Vector3Int wallPosition, GameObject wallPrefab)
     {
-       Instantiate(wallPrefab,wallPosition,Quaternion.identity,wallParent.transform);
+        Instantiate(wallPrefab, wallPosition, Quaternion.identity, wallParent.transform);
     }
-
 private void CreateMesh(Vector2 bottomLeftCorner, Vector2 topRightCorner)
 {
     Vector3 bottomLeftV = new Vector3(bottomLeftCorner.x, 0, bottomLeftCorner.y);
@@ -122,9 +119,7 @@ private void CreateMesh(Vector2 bottomLeftCorner, Vector2 topRightCorner)
 
     dungeonFloor.transform.parent = transform;
 
-    // Code to calculate wall positions remains unchanged
-
-        for (int row = (int)bottomLeftV.x; row < (int)bottomRightV.x; row++)
+   for (int row = (int)bottomLeftV.x; row < (int)bottomRightV.x; row++)
         {
             var wallPosition = new Vector3(row, 0, bottomLeftV.z);
             AddWallPositionToList(wallPosition, possibleWallHorizontalPosition, possibleDoorHorizontalPosition);
@@ -146,7 +141,8 @@ private void CreateMesh(Vector2 bottomLeftCorner, Vector2 topRightCorner)
         }
     }
 
-    private void AddWallPositionToList(Vector3 wallPosition, List<Vector3Int> wallList, List<Vector3Int> doorList)
+
+     private void AddWallPositionToList(Vector3 wallPosition, List<Vector3Int> wallList, List<Vector3Int> doorList)
     {
         Vector3Int point = Vector3Int.CeilToInt(wallPosition);
         if (wallList.Contains(point)){

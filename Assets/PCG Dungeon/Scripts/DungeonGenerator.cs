@@ -20,23 +20,17 @@ public class DungeonGenerator : MonoBehaviour
         this.dungeonLength = dungeonLength;
     }
 
-    public List<NodePCG> CalculateDungeon(
-    int maxiterations, 
-    int roomWidthMin,
-     int roomLengthMin, 
-     float roomBottomCornerModifier, 
-     float roomTopCornerModifier, 
-     int roomOffset,
-     int corridorWidth)
+    public List<NodePCG> CalculateDungeon(int maxiterations, int roomWidthMin, int roomLengthMin, float roomBottomCornerModifier, float roomTopCornerModifier, int roomOffset, int corridorWidth)
     {
         BinarySpacePartitioning bsp = new BinarySpacePartitioning(dungeonWidth, dungeonLength);
         allSpaceNodes = bsp.PrepareNodesCollection(maxiterations, roomWidthMin, roomLengthMin);
         List<NodePCG> roomSpaces = StructureHelper.TraverseGraphToExtractLowestLeafes(bsp.RootNode);
+
         RoomGenerator roomGenerator = new RoomGenerator(maxiterations, roomLengthMin, roomWidthMin);
         List<RoomNode> roomList = roomGenerator.GenerateRoomsInGivenSpaces(roomSpaces, roomBottomCornerModifier, roomTopCornerModifier, roomOffset);
-        
-        CorridorsGenerator corridorsGenerator = new CorridorsGenerator();
-        var corridorList = corridorsGenerator.CreateCorridor(allSpaceNodes, corridorWidth);
+
+        CorridorsGenerator corridorGenerator = new CorridorsGenerator();
+        var corridorList = corridorGenerator.CreateCorridor(allSpaceNodes, corridorWidth);
         
         return new List<NodePCG>(roomList).Concat(corridorList).ToList();
     }

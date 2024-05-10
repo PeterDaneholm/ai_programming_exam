@@ -9,14 +9,15 @@ public class CorridorsGenerator
     public List<NodePCG> CreateCorridor(List<RoomNode> allSpaceNodes, int corridorWidth)
     {
         List<NodePCG> corridorList = new List<NodePCG>();
-        Queue<RoomNode> structuresToCheck = new Queue<RoomNode>(allSpaceNodes.OrderByDescending (node => node.treelayerIndex).ToList());
+        Queue<RoomNode> structuresToCheck = new Queue<RoomNode>(
+            allSpaceNodes.OrderByDescending (node => node.treelayerIndex).ToList());
         while (structuresToCheck.Count > 0){
-            var node = structuresToCheck.Dequeue();
-            if(node.ChildrenNodeList.Count == 0)
+            var nodePCG = structuresToCheck.Dequeue();
+            if(nodePCG.ChildrenNodeList.Count == 0)
             {
                 continue;
             }   
-            corridorNode corridor = new corridorNode(node.ChildrenNodeList[0], node.ChildrenNodeList[1], corridorWidth);
+            corridorNode corridor = new corridorNode(nodePCG.ChildrenNodeList[0], nodePCG.ChildrenNodeList[1], corridorWidth);
             corridorList.Add(corridor);
 
         }
