@@ -74,49 +74,55 @@ public class DungeonCreator : MonoBehaviour
        Instantiate(wallPrefab,wallPosition,Quaternion.identity,wallParent.transform);
     }
 
-    private void CreateMesh(Vector2 bottomLeftCorner, Vector2 topRightCorner)
+private void CreateMesh(Vector2 bottomLeftCorner, Vector2 topRightCorner)
+{
+    Vector3 bottomLeftV = new Vector3(bottomLeftCorner.x, 0, bottomLeftCorner.y);
+    Vector3 bottomRightV = new Vector3(topRightCorner.x, 0, bottomLeftCorner.y);
+    Vector3 topLeftV = new Vector3(bottomLeftCorner.x, 0, topRightCorner.y);
+    Vector3 topRightV = new Vector3(topRightCorner.x, 0, topRightCorner.y);
+
+    Vector3[] vertices = new Vector3[]
     {
-        Vector3 bottomLeftV = new Vector3(bottomLeftCorner.x, 0, bottomLeftCorner.y);
-        Vector3 bottomRightV = new Vector3(topRightCorner.x, 0, bottomLeftCorner.y);
-        Vector3 topLeftV = new Vector3(bottomLeftCorner.x, 0, topRightCorner.y);
-        Vector3 topRightV = new Vector3(topRightCorner.x, 0, topRightCorner.y);
+        topLeftV,
+        topRightV,
+        bottomLeftV,
+        bottomRightV
+    };
 
-        Vector3[] vertices = new Vector3[]
-        {
-            topLeftV,
-            topRightV,
-            bottomLeftV,
-            bottomRightV
-        };
-
-        Vector2[] uvs = new Vector2[vertices.Length];
-        for (int i = 0; i < uvs.Length; i++)
-        {
+    Vector2[] uvs = new Vector2[vertices.Length];
+    for (int i = 0; i < uvs.Length; i++)
+    {
         uvs[i] = new Vector2(vertices[i].x, vertices[i].z);
-        }
+    }
 
-        int[] triangles = new int[]
-        {
-            0,
-            1,
-            2,
-            2,
-            1,
-            3
-        };
+    int[] triangles = new int[]
+    {
+        0,
+        1,
+        2,
+        2,
+        1,
+        3
+    };
 
-        Mesh mesh = new Mesh();
-        mesh.vertices = vertices;
-        mesh.uv = uvs;
-        mesh.triangles = triangles;
+    Mesh mesh = new Mesh();
+    mesh.vertices = vertices;
+    mesh.uv = uvs;
+    mesh.triangles = triangles;
 
-        GameObject dungeonFloor = new GameObject("Mesh" + bottomLeftCorner, typeof(MeshFilter), typeof(MeshRenderer));
+    GameObject dungeonFloor = new GameObject("Mesh" + bottomLeftCorner, typeof(MeshFilter), typeof(MeshRenderer));
 
-        dungeonFloor.transform.position = Vector3.zero;
-        dungeonFloor.transform.localScale = Vector3.one;
-        dungeonFloor.GetComponent<MeshFilter>().mesh = mesh;
-        dungeonFloor.GetComponent<MeshRenderer>().material = material; // 'material' needs to be defined or 
-        dungeonFloor.transform.parent = transform;
+    dungeonFloor.transform.position = Vector3.zero;
+    dungeonFloor.transform.localScale = Vector3.one;
+    dungeonFloor.GetComponent<MeshFilter>().mesh = mesh;
+    dungeonFloor.GetComponent<MeshRenderer>().material = material;
+
+    // Set the layer to "Walkable"
+    dungeonFloor.layer = LayerMask.NameToLayer("Walkable");
+
+    dungeonFloor.transform.parent = transform;
+
+    // Code to calculate wall positions remains unchanged
 
         for (int row = (int)bottomLeftV.x; row < (int)bottomRightV.x; row++)
         {

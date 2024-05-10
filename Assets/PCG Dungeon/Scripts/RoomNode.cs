@@ -7,10 +7,11 @@ public class RoomNode : NodePCG
         this.BottomLeftAreaCorner = bottomLeftAreaCorner;
         this.TopRightAreaCorner = topRightAreaCorner;
         this.BottomRightAreaCorner = new Vector2Int(topRightAreaCorner.x, bottomLeftAreaCorner.y);
-        this.TopLeftAreaCorner = new Vector2Int(bottomLeftAreaCorner.x, topRightAreaCorner.y);
-        treelayerIndex = index;
+        this.TopLeftAreaCorner = new Vector2Int(bottomLeftAreaCorner.x, TopRightAreaCorner.y);
+        this.treelayerIndex = index;
     }
 
-    public int width { get => (int)(TopRightAreaCorner.x - BottomLeftAreaCorner.x); }
-    public int length { get => (int)(TopRightAreaCorner.y - BottomLeftAreaCorner.y); }
+    public int Width { get => (int)(TopRightAreaCorner.x - BottomLeftAreaCorner.x); }
+    public int Length { get => (int)(TopRightAreaCorner.y - BottomLeftAreaCorner.y); }
 }
+  

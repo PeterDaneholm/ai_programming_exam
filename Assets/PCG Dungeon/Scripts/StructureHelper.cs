@@ -37,30 +37,28 @@ public static class StructureHelper
         }
 
     public static Vector2Int GenerateBottomLeftCornerBetween(
-        Vector2Int boundaryLeftPoint, Vector2Int boundaryRightPoint, float pointmodifier, int offset)
+        Vector2Int boundaryLeftPoint, Vector2Int boundaryRightPoint, float pointModifier, int offset)
     {
         int minX = boundaryLeftPoint.x + offset;
         int maxX = boundaryRightPoint.x - offset;
         int minY = boundaryLeftPoint.y + offset;
         int maxY = boundaryRightPoint.y - offset;
         return new Vector2Int(
-            Random.Range(minX, (int)(minX + (maxX - minX) * pointmodifier)), 
-            Random.Range(minY, (int)(minY + (maxY - minY) * pointmodifier)));
-
+            Random.Range(minX, (int)(minX + (maxX - minX) * pointModifier)),
+            Random.Range(minY, (int)(minY + (minY - minY) * pointModifier)));
     }
 
     public static Vector2Int GenerateTopRightCornerBetween(
-        Vector2Int boundaryLeftPoint, Vector2Int boundaryRightPoint, float pointmodifier, int offset)
+        Vector2Int boundaryLeftPoint, Vector2Int boundaryRightPoint, float pointModifier, int offset)
     {
         int minX = boundaryLeftPoint.x + offset;
         int maxX = boundaryRightPoint.x - offset;
         int minY = boundaryLeftPoint.y + offset;
         int maxY = boundaryRightPoint.y - offset;
-
         return new Vector2Int(
-            Random.Range((int)(minX + (maxX - minX) * pointmodifier), maxX),
-            Random.Range((int)(minY + (maxY - minY) * pointmodifier), maxY));
-
+            Random.Range((int)(minX+(maxX-minX)*pointModifier),maxX),
+            Random.Range((int)(minY+(maxY-minY)*pointModifier),maxY)
+            );
     }
 
     public static Vector2Int CalculatemiddlePoint(Vector2Int v1, Vector2Int v2)
@@ -76,7 +74,6 @@ public enum RelativePosition
 {
     Up,
     Down,
-    Left,
-    Right
-    
+    Right,
+    Left
 }
