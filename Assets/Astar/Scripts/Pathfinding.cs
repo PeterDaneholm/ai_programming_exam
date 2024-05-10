@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Diagnostics;
 using System;
+using System.Linq;
 
 public class Pathfinding : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class Pathfinding : MonoBehaviour
 
     /* public Transform seeker, target;
  */
+    public List<int> totalCost;
     PathRequestManager requestManager;
     Grid grid;
     void Awake()
@@ -66,6 +68,7 @@ public class Pathfinding : MonoBehaviour
                 sw.Stop();
                 print("Path found" + sw.ElapsedMilliseconds + " ms");
                 pathSuccess = true;
+                print("target pos" + targetNode.worldPosition);
                 break;
             }
 
@@ -81,6 +84,7 @@ public class Pathfinding : MonoBehaviour
                 int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour) + neighbour.movementPenalty;
                 if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
                 {
+                    totalCost.Add(newMovementCostToNeighbour);
                     neighbour.gCost = newMovementCostToNeighbour;
                     neighbour.hCost = GetDistance(neighbour, targetNode);
                     neighbour.parent = currentNode;
@@ -118,6 +122,8 @@ public class Pathfinding : MonoBehaviour
         Vector3[] waypoints = SimplifyPath(path);
         Array.Reverse(waypoints);
         grid.path = path;
+        int sumCost = totalCost.Sum();
+        print("Total cost: " + sumCost);
         return waypoints;
     }
 
