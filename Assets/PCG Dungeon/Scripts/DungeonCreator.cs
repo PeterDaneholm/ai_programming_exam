@@ -44,6 +44,11 @@ public class DungeonCreator : MonoBehaviour
         {
             SetObjectFromDimensions(Player);
         }
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            DeleteAllInstances("Target");
+            DeleteAllInstances("Player");
+        }
     }
     public void createDungeon()
     {
@@ -188,6 +193,14 @@ public class DungeonCreator : MonoBehaviour
         Destroy(GameObject.Find("Player(Clone)"));
     }
 
+    private void DeleteAllInstances(string tag)
+    {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag(tag);
+        foreach (var item in targets)
+        {
+            Destroy(item);
+        }
+    }
     private void SetObjectFromDimensions(GameObject obj)
     {
         int x, z;
